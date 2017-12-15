@@ -38,6 +38,8 @@ public class Username extends AppCompatActivity {
     Firebase isQuestionActiveRef, isQuestionAnsweredRef;
     Firebase username;
     boolean isQuestionActive, isQuestionAnswered, isAnsweredByMe;
+    long time=Long.MAX_VALUE;
+    Firebase clicktime;
     String un;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class Username extends AppCompatActivity {
         isQuestionActiveRef = firebase.child("isQuestionActive");
         isQuestionAnsweredRef = firebase.child("isQuestionAnswered");
         username=firebase.child("firstusername");
+        clicktime=firebase.child("earlytime");
     }
 
     @Override
@@ -80,10 +83,11 @@ public class Username extends AppCompatActivity {
 
     public void onAnswerButtonClick(View view) {
         Log.d(TAG, "-->button clicked");
-        if (!isQuestionAnswered) {
+        if (!isQuestionAnswered||(isQuestionAnswered&&clicktime.) {
             isAnsweredByMe = true;
             isQuestionAnsweredRef.setValue(true);
             username.setValue(un);
+            time=System.currentTimeMillis(long);
         }
     }
 
@@ -131,12 +135,14 @@ public class Username extends AppCompatActivity {
                 if (!isQuestionActive)
                     return;
                 if (isQuestionAnswered) {
-                    if (isAnsweredByMe) {
+                    clicktime=dataSnapshot.getValue(long.class);
+                    if (isAnsweredByMe&&(time<clicktime)) {
                         indicatorText.setText("You pressed buzzer first!!");
                         answerButton.setText("Fast :)");
                         answerButton.setEnabled(false);
                         answerButton.setBackgroundColor(Color.parseColor("#00ff00"));
                         username.setValue(un);
+                        clicktime.setValue(time);s
                     } else {
                         indicatorText.setText(" Someone already pressed the buzzer!!");
                         answerButton.setText("Slow :(");
